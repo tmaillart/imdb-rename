@@ -542,7 +542,7 @@ impl CandidatePath {
     /// entity. In general, this replaces the `base_name` of this candidate
     /// with the title found in the given entity.
     fn imdb_name(&self, ent: &MediaEntity) -> String {
-        let name = match ent.episode() {
+        let mut name = match ent.episode() {
             Some(ep) => {
                 format!(
                     "S{:02}E{:02} - {}",
@@ -558,6 +558,7 @@ impl CandidatePath {
                 }
             }
         };
+        name = format!("{}-{}", name, ent.title().id);
         match self.ext {
             None => name,
             Some(ref ext) => format!("{}.{}", name, ext),
